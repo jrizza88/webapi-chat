@@ -1,41 +1,44 @@
-// const express = require('express');
+const express = require('express');
 
-// const Hubs = require('./hubs/hubs-model.js');
+const hubsRouter = require('./hubs/hubs-router.js')
 
-// const server = express();
+const server = express();
 
-const server = require('./server.js')
+server.use(express.json());
 
-const PORT = 9090;
+server.use("/api/hubs", hubsRouter)
 
-server.listen(PORT, () => {
-  console.log(`*** Server Running on http://localhost:${PORT} ***`);
+server.get('/', (req, res) => {
+  res.send(`
+    <h2>Lambda Hubs API</h>
+    <p>Welcome to the Lambda Hubs API</p>
+  `);
 });
 
+// this should always be at the bottom
+// usually used for errors
+server.get('*', (req, res) => {
+    res.status(404).send(`
+    <h2> Page not found</h2>
+    `)
+});
 
-// server.use(express.json());
+// add an endpoint that returns all the messages for a hub
+// add an endpoint for adding new message to a hub
 
-// server.get('/', (req, res) => {
-//   console.log("query", req.query);
-//   console.log('express', req.query.express);
-// // http://localhost:9090/?key=value&query=string&express=great 
-// // type the above in the browser, console should print the above
-//   res.send(`
-//     <h2>Lambda Hubs API</h>
-//     <p>Welcome to the Lambda Hubs API</p>
-//   `);
-// });
+module.exports = server;
+
 
 // // async has to be written in order to work... 
 // const asyncAwaitEx = async () => {
-//   Hubs.find({})
-//   .then(hubs => {
-//     //do stuff with hubs
-//     res.json(hubs);
-//   }).catch(err => {
-//     // do stuf with err
-//     res.status(500).json(e);
-//   });
+// //   Hubs.find({})
+// //   .then(hubs => {
+// //     //do stuff with hubs
+// //     res.json(hubs);
+// //   }).catch(err => {
+// //     // do stuf with err
+// //     res.status(500).json(e);
+// //   });
 // // will NOT work with an async method
 //   const hubs = Hubs.find({})
 //   // point of async to try to code something like this
@@ -134,5 +137,10 @@ server.listen(PORT, () => {
 //   }
 // });
 
-// add an endpoint that returns all the messages for a hub
-// add an endpoint for adding new message to a hub
+// // add an endpoint that returns all the messages for a hub
+// // add an endpoint for adding new message to a hub
+
+// server.listen(PORT, () => {
+//   console.log(`*** Server Running on http://localhost:${PORT} ***`);
+// });
+
